@@ -88,7 +88,7 @@ export default class AddNote extends React.Component {
             onChange={(e) => this.updateFolderId(e.target.value)}
           >
             {folderOptions.map((options) => (
-              <option key={options.id} value={options.name}>
+              <option key={options.id} value={options.id}>
                 {options.name}
               </option>
             ))}

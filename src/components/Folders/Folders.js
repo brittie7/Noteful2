@@ -2,11 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import NotefulContext from "../../NotefulContext";
+import { withRouter } from "react-router-dom";
 
-export default class Folders extends React.Component {
+class Folders extends React.Component {
   static contextType = NotefulContext;
 
   render() {
+    const url = window.location.href;
+    let indexOfFolder = url.indexOf("folder");
+    let folderId = url.substring(indexOfFolder + 7, url.length);
+
     return (
       <div className="Folders">
         <ul>
@@ -14,11 +19,7 @@ export default class Folders extends React.Component {
             <li
               key={folder.id}
               onClick={this.handleClick}
-              className={
-                folder.id === this.props.match.params.folderid
-                  ? "selected"
-                  : "unselected"
-              }
+              className={folder.id === folderId ? "selected" : "unselected"}
             >
               <Link to={`/folder/${folder.id}`}>{folder.name}</Link>
             </li>
@@ -39,3 +40,5 @@ Folders.propTypes = {
     })
   ),
 };
+
+export default withRouter(Folders);
