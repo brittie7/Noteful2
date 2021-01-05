@@ -1,17 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import NotefulContext from "../../NotefulContext";
 
 export default class Folders extends React.Component {
-  static defaultProps = {
-    folders: [],
-  };
+  static contextType = NotefulContext;
 
   render() {
     return (
       <div className="Folders">
         <ul>
-          {this.props.folders.map((folder) => (
+          {this.context.folders.map((folder) => (
             <li
               key={folder.id}
               onClick={this.handleClick}
@@ -31,7 +30,12 @@ export default class Folders extends React.Component {
       </div>
     );
   }
-  // Folders.propTypes = {
-  //   value: PropTypes.array
-  // }
 }
+Folders.propTypes = {
+  folders: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ),
+};

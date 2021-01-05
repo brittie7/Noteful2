@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+.unselected,
+.selected {
+  padding: 10px 10px;
+  border: 1px solid gray;
+  text-align: center;
+  background-color: #f4f4f4;
+  margin: 5px;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.unselected a {
+  text-decoration: none;
+}
+
+.unselected:hover {
+  background-color: rgb(133, 117, 117);
+  color: white;
+  cursor: pointer;
+}

@@ -1,5 +1,7 @@
 import React from "react";
 import ValidationError from "../ValidationError/ValidationError";
+import PropTypes from "prop-types";
+import NotefulContext from "../../NotefulContext";
 
 export default class AddNote extends React.Component {
   constructor(props) {
@@ -9,10 +11,36 @@ export default class AddNote extends React.Component {
         value: "",
         touched: false,
       },
+      folderId: "",
     };
   }
+  static contextType = NotefulContext;
+
   handleSubmit(event) {
     event.preventDefault();
+    const name = this.state.name.value;
+    const folderId = this.state.folderId;
+    const noteDetail = { name, folderId };
+    const options = {
+      method: "POST",
+      body: JSON.stringify(noteDetail),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    fetch("http://localhost:9090/notes", options)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Something went wrong, please try again later");
+        }
+        this.context.updateNotes(noteDetail);
+
+        return res.json();
+      })
+      .catch((error) => {
+        console.error({ error });
+      });
+    this.props.history.push("/");
   }
 
   validateName() {
@@ -26,8 +54,12 @@ export default class AddNote extends React.Component {
     this.setState({ name: { value: name, touched: true } });
   }
 
+  updateFolderId(id) {
+    this.setState({ folderId: id });
+  }
+
   render() {
-    const folderOptions = this.props.notes;
+    const folderOptions = this.context.folders;
 
     return (
       <section>
@@ -47,12 +79,18 @@ export default class AddNote extends React.Component {
             defaultValue="New Note"
             onChange={(e) => this.updateName(e.target.value)}
           ></input>
-          <label for="note-content">Note Content:</label>
+          <label htmlFor="note-content">Note Content:</label>
           <textarea id="note-content" name="content"></textarea>
-          <label for="folder">Choose a folder:</label>
-          <select id="folder" name="folder">
+          <label htmlFor="folder">Choose a folder:</label>
+          <select
+            id="folder"
+            name="folder"
+            onChange={(e) => this.updateFolderId(e.target.value)}
+          >
             {folderOptions.map((options) => (
-              <option value={options.name}>{options.name}</option>
+              <option key={options.id} value={options.name}>
+                {options.name}
+              </option>
             ))}
           </select>
 
@@ -68,3 +106,15 @@ export default class AddNote extends React.Component {
     );
   }
 }
+
+AddNote.propTypes = {
+  notes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      folderId: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+      modified: PropTypes.string.isRequired,
+    })
+  ),
+};

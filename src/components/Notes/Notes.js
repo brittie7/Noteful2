@@ -1,18 +1,18 @@
 import React from "react";
 import Note from "../Note/Note";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import NotefulContext from "../../NotefulContext";
 
 export default class Notes extends React.Component {
-  static defaultProps = {
-    notes: [],
-  };
+  static contextType = NotefulContext;
+
   render() {
-    //checks to see if the route id that we clicked on matches the folder id in state
     const noteList = this.props.match.params.folderid
-      ? this.props.notes.filter(
+      ? this.context.notes.filter(
           (n) => n.folderId === this.props.match.params.folderid
         )
-      : this.props.notes;
+      : this.context.notes;
 
     return (
       <div className="Notes">
@@ -30,3 +30,5 @@ export default class Notes extends React.Component {
     );
   }
 }
+
+Notes.propTypes = {};
