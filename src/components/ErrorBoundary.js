@@ -9,6 +9,10 @@ export default class ErrorBoundary extends React.Component {
     };
   }
 
+  static defaultProps = {
+    children: [],
+  };
+
   static getDerivedStateFromError(error) {
     return { hasError: true };
   }
@@ -21,5 +25,5 @@ export default class ErrorBoundary extends React.Component {
 }
 
 ErrorBoundary.propTypes = {
-  chilren: PropTypes.array.isRequired,
+  chilren: PropTypes.array,
 };
