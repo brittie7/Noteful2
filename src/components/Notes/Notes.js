@@ -31,4 +31,6 @@ export default class Notes extends React.Component {
   }
 }
 
-Notes.propTypes = {};
+Notes.propTypes = {
+  folderid: PropTypes.string.isRequired,
+};

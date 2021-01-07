@@ -1,26 +1,16 @@
 import React from "react";
-import ValidationError from "../ValidationError/ValidationError";
 import PropTypes from "prop-types";
 import NotefulContext from "../../NotefulContext";
 
 export default class AddNote extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: {
-        value: "",
-        touched: false,
-      },
-      folderId: "",
-    };
-  }
   static contextType = NotefulContext;
 
   handleSubmit(event) {
     event.preventDefault();
-    const name = this.state.name.value;
-    const folderId = this.state.folderId;
-    const noteDetail = { name, folderId };
+    const name = event.target.name.value;
+    const folderId = event.target.folder.value;
+    const content = event.target.content.value;
+    const noteDetail = { name, folderId, content };
     const options = {
       method: "POST",
       body: JSON.stringify(noteDetail),
@@ -33,29 +23,15 @@ export default class AddNote extends React.Component {
         if (!res.ok) {
           throw new Error("Something went wrong, please try again later");
         }
-        this.context.updateNotes(noteDetail);
-
         return res.json();
+      })
+      .then((newNote) => {
+        this.context.updateNotes(newNote);
+        this.props.history.push("/");
       })
       .catch((error) => {
         console.error({ error });
       });
-    this.props.history.push("/");
-  }
-
-  validateName() {
-    const name = this.state.name.value.trim();
-    if (name.length === 0) {
-      return "Name is required";
-    }
-  }
-
-  updateName(name) {
-    this.setState({ name: { value: name, touched: true } });
-  }
-
-  updateFolderId(id) {
-    this.setState({ folderId: id });
   }
 
   render() {
@@ -77,16 +53,12 @@ export default class AddNote extends React.Component {
             name="name"
             ref={this.nameInput}
             defaultValue="New Note"
-            onChange={(e) => this.updateName(e.target.value)}
-          ></input>
+            required
+          />
           <label htmlFor="note-content">Note Content:</label>
-          <textarea id="note-content" name="content"></textarea>
+          <textarea id="note-content" name="content" required></textarea>
           <label htmlFor="folder">Choose a folder:</label>
-          <select
-            id="folder"
-            name="folder"
-            onChange={(e) => this.updateFolderId(e.target.value)}
-          >
+          <select id="folder" name="folder" required>
             {folderOptions.map((options) => (
               <option key={options.id} value={options.id}>
                 {options.name}
@@ -94,11 +66,7 @@ export default class AddNote extends React.Component {
             ))}
           </select>
 
-          <button
-            type="submit"
-            className="new__button"
-            disabled={this.validateName()}
-          >
+          <button type="submit" className="new__button">
             Add New Note
           </button>
         </form>
@@ -108,13 +76,5 @@ export default class AddNote extends React.Component {
 }
 
 AddNote.propTypes = {
-  notes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      folderId: PropTypes.string.isRequired,
-      content: PropTypes.string.isRequired,
-      modified: PropTypes.string.isRequired,
-    })
-  ),
+  history: PropTypes.object,
 };

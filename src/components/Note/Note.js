@@ -1,7 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 export default class Note extends React.Component {
+  static defaultProps = {
+    content: "Test Content",
+    name: "Test Name",
+    modified: "2020-01-01",
+  };
   render() {
     return (
       <div className="Note">
@@ -20,3 +26,9 @@ export default class Note extends React.Component {
     );
   }
 }
+
+Note.propTypes = {
+  content: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  modified: PropTypes.string.isRequired,
+};
