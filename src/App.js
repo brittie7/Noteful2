@@ -2,13 +2,11 @@ import React from "react";
 import "./App.css";
 import Folders from "./components/Folders/Folders";
 import Notes from "./components/Notes/Notes";
-import store from "./dummy-store";
 import { Route, Link } from "react-router-dom";
 import Note from "./components/Note/Note";
 import AddFolder from "./components/AddFolder/AddFolder";
 import AddNote from "./components/AddNote/AddNote";
 import ErrorBoundary from "./components/ErrorBoundary";
-import PropTypes from "prop-types";
 import NotefulContext from "./NotefulContext";
 
 export default class App extends React.Component {

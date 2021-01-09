@@ -24,17 +24,13 @@ export default class AddFolder extends React.Component {
         "Content-Type": "application/json",
       },
     };
-    fetch("http://localhost:9090/folders", options)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Something went wrong, please try again later");
-        }
-        this.context.updateFolders(name);
-        return res.json();
-      })
-      .catch((error) => {
-        console.error({ error });
-      });
+    fetch("http://localhost:9090/folders", options).then((res) => {
+      if (!res.ok) {
+        throw new Error("Something went wrong, please try again later");
+      }
+      this.context.updateFolders(name);
+      return res.json();
+    });
     this.props.history.push("/");
   }
 
@@ -66,10 +62,16 @@ export default class AddFolder extends React.Component {
             type="text"
             className="newFolder"
             name="name"
+            required
             ref={this.nameInput}
             defaultValue="New Folder"
+            aria-required="true"
+            aria-label="New Folder Name"
+            aria-describedby="addNewButton"
             onChange={(e) => this.updateName(e.target.value)}
           ></input>
+          <div id="addNewButton">Please enter a folder name</div>
+
           <button
             type="submit"
             className="new__button"

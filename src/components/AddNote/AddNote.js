@@ -28,9 +28,6 @@ export default class AddNote extends React.Component {
       .then((newNote) => {
         this.context.updateNotes(newNote);
         this.props.history.push("/");
-      })
-      .catch((error) => {
-        console.error({ error });
       });
   }
 
@@ -53,6 +50,8 @@ export default class AddNote extends React.Component {
             name="name"
             ref={this.nameInput}
             defaultValue="New Note"
+            aria-label="New Note Title"
+            aria-required="true"
             required
           />
           <label htmlFor="note-content">Note Content:</label>

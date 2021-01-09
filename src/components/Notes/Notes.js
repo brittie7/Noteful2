@@ -7,6 +7,9 @@ import NotefulContext from "../../NotefulContext";
 export default class Notes extends React.Component {
   static contextType = NotefulContext;
 
+  static defaultProps = {
+    folderid: "",
+  };
   render() {
     const noteList = this.props.match.params.folderid
       ? this.context.notes.filter(
