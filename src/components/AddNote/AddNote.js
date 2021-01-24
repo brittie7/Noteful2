@@ -57,9 +57,9 @@ export default class AddNote extends React.Component {
           <label htmlFor="note-content">Note Content:</label>
           <textarea id="note-content" name="content" required></textarea>
           <label htmlFor="folder">Choose a folder:</label>
-          <select id="folder" name="folder" required>
-            {folderOptions.map((options) => (
-              <option key={options.id} value={options.id}>
+          <select id="folder" name="folder" required defaultValue="">
+            {folderOptions.map((options, index) => (
+              <option key={index} value={options.id}>
                 {options.name}
               </option>
             ))}

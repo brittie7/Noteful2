@@ -15,9 +15,9 @@ class Folders extends React.Component {
     return (
       <div className="Folders">
         <ul>
-          {this.context.folders.map((folder) => (
+          {this.context.folders.map((folder, index) => (
             <li
-              key={folder.id}
+              key={index}
               onClick={this.handleClick}
               className={folder.id === folderId ? "selected" : "unselected"}
             >
